@@ -2,7 +2,10 @@
 #include <string>
 using namespace std;
 
+void Interfaz();
+
 // Estrcutura de comida que sera parte de un combo
+
 struct Componente{
     string nombre;
     int cantidad;
@@ -31,7 +34,7 @@ struct Combo{
     Combo(string nombre_entrada){
         nombre = nombre_entrada;
     }
-        Combo(){}
+    Combo(){}
 
     // Procedimientos
     int componente_en_pos(string nombre_buscar);

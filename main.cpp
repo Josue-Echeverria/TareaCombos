@@ -1,4 +1,5 @@
-#include "Interfaz.cpp"
+
+#include "Declaraciones.cpp"
 
 int main()
 {
