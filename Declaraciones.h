@@ -60,7 +60,7 @@ struct base_datos{
     void borrar_combo(string combo_borrar); // Borra el combo con el nombre que se dio de entrada
     void imprimir_combos(); // Imprime todos los combos que se han agregado a la base de datos
     void modificar_nombre(string nuevo_nombre, string nombre_actual); // Busca el nombre actual del combo en la base de datos y lo cambia por un nombre nuevo
-    void modifica_cantidad_componente(string nombre, int nueva_cantidad); // Buca el combo con el nombre correspondiente y modifica la cantidad de componente de un combo
+    void modifica_cantidad_componente(int posComp, int nueva_cantidad, int pos); // Buca el combo con el nombre correspondiente y modifica la cantidad de componente de un combo
     void agregar_componente_combo(string nombre, Componente *componente_agregar); // Busca el combo que se va a modificar y agrega el componente de entrada
     void calcular_porciones(string nombre, int n_personas); // Calcula cuantos componentes tiene que tener un combo para servir a n personas (Regla de 3)
 

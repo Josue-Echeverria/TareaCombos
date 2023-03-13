@@ -16,6 +16,7 @@
         }
         return -1;
     }
+    
 
     /*Pseudocodigo:
         1. Se crea una bandera que se encedera cuando el valor actual del array es null y si la bandera no esta encendida
@@ -56,7 +57,7 @@
         } else {
             Componentes[contador_componentes] = componente_entrada;
             contador_componentes++;
-            cout<<"\n¡Componente agregado con exito!\n"<<endl;
+            cout<<"\nï¿½Componente agregado con exito!\n"<<endl;
         }
     }
 
@@ -67,7 +68,7 @@
         } else {
                 Combos[contador_combos] = combo_entrada;
                 contador_combos++;
-                cout<<"\n¡Combo agregado con exito!\n"<<endl;
+                cout<<"\nï¿½Combo agregado con exito!\n"<<endl;
         }
     }
 
@@ -122,6 +123,19 @@
         }
     }
 
+    void base_datos::modificar_nombre(string nuevo_nombre, string nombre_actual){
+        int pos = combo_en_pos(nombre_actual);
+        if (combo_en_pos(nuevo_nombre) == -1){
+            Combos[pos] -> nombre = nuevo_nombre; 
+            cout<<"Combo modificado con exito"<<endl;
+        }else
+            cout<<"ERROR: NO SE PUEDE MODIFIDICAR EL NOMBRE DEL COMBO YA QUE EL NOMBRE SE ENCUENTRA UTILIZADO"<<endl;    
+    }
+
+    void base_datos::modifica_cantidad_componente(int posComp, int nueva_cantidad, int pos){
+        Combos[pos]-> Componentes[posComp]->cantidad = nueva_cantidad;
+        cout<<"Cantidad modificada con exito"<<endl;
+    }
 
     void Interfaz(){
     /*AQUI INICIA LA BASE DE DATOS*/
@@ -186,21 +200,46 @@
 
         case 5:
             cout<<"\nUsted a elegido la opcion para cambiar el nombre de algun combo\n"<<endl;
-
-            cout<<"TO DO"<<endl;
+            cout<<"Inserte el nombre del combo a modificar: ";
+            cin>>entrada;
+            posicion = menu->combo_en_pos(entrada);
+            if(posicion == -1){
+                cout<<"ERROR: NO SE PUEDE MODIFIDICAR EL NOMBRE DEL COMBO YA QUE EL COMBO NO EXISTE"<<endl;
+                goto inicio;
+            }
+            cout<<"\nEscriba el nombre a modificar: ";
+            cin>>entrada1;
+            cout<<"\n";
+            menu->modificar_nombre(entrada1, entrada);
             goto inicio;
 
         case 6:
-            cout<<"\nUsted a elegido la opcion para modifica la cantidad de un componente de un combo\n"<<endl;
-
-            cout<<"TO DO"<<endl;
+            cout<<"\nUsted a elegido la opcion para modificar la cantidad de un componente de un combo\n"<<endl;
+            cout<<"Ingrese el nombre del combo al que desea modificar la cantidad componente: ";
+            cin>>entrada;
+            posicion = menu->combo_en_pos(entrada);
+            if(posicion == -1){ // EL combo al que se quiere aï¿½adir un componente no existe y por lo tanto no se puede agregar nada
+                cout<<"ERROR: NO SE PUEDE AGREGAR COMPONENTE YA QUE EL COMBO NO EXISTE"<<endl;   
+                goto inicio; 
+            }
+            cout<<"Ingrese el nombre del componente: ";
+            cin>>entrada1;
+            if (menu->Combos[posicion]->componente_en_pos(entrada1) == -1)
+                cout<<"\nERROR: EL COMPONENTE NO ESTA EN EL COMBO"<<endl;
+            else{
+                int cant;
+                cout<<"\nInserte la cantidad nueva: ";
+                cin>>cant;
+                int posComp = menu->Combos[posicion]->componente_en_pos(entrada1);
+                menu-> modifica_cantidad_componente(posComp, cant, posicion);
+            }
             goto inicio;
 
         case 7:
             cout<<"Ingrese el nombre del combo al que desea agregar el componente: ";
             cin>>entrada;
             posicion = menu->combo_en_pos(entrada);
-            if(posicion == -1){ // EL combo al que se quiere añadir un componente no existe y por lo tanto no se puede agregar nada
+            if(posicion == -1){ // EL combo al que se quiere aï¿½adir un componente no existe y por lo tanto no se puede agregar nada
                 cout<<"ERROR: NO SE PUEDE AGREGAR COMPONENTE YA QUE EL COMBO NO EXISTE"<<endl;
                 goto inicio;
             }
