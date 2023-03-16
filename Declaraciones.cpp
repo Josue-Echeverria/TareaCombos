@@ -16,7 +16,7 @@
         }
         return -1;
     }
-    
+
 
     /*Pseudocodigo:
         1. Se crea una bandera que se encedera cuando el valor actual del array es null y si la bandera no esta encendida
@@ -68,7 +68,7 @@
         } else {
                 Combos[contador_combos] = combo_entrada;
                 contador_combos++;
-                cout<<"\n�Combo agregado con exito!\n"<<endl;
+                cout<<"\nCombo agregado con exito!\n"<<endl;
         }
     }
 
@@ -100,7 +100,7 @@
             cout<<"\nNO HAY NADA EN EL COMBO\n"<<endl;
         else {
             for(int i = 0; i<contador_combos; i++){
-                cout<<Combos[i]->nombre<<":"<<endl;
+                cout<<"\n"<<Combos[i]->nombre<<":"<<endl;
                 Combos[i]->imprimir_componentes();
             }
         }
@@ -126,10 +126,10 @@
     void base_datos::modificar_nombre(string nuevo_nombre, string nombre_actual){
         int pos = combo_en_pos(nombre_actual);
         if (combo_en_pos(nuevo_nombre) == -1){
-            Combos[pos] -> nombre = nuevo_nombre; 
+            Combos[pos] -> nombre = nuevo_nombre;
             cout<<"Combo modificado con exito"<<endl;
         }else
-            cout<<"ERROR: NO SE PUEDE MODIFIDICAR EL NOMBRE DEL COMBO YA QUE EL NOMBRE SE ENCUENTRA UTILIZADO"<<endl;    
+            cout<<"ERROR: NO SE PUEDE MODIFIDICAR EL NOMBRE DEL COMBO YA QUE EL NOMBRE SE ENCUENTRA UTILIZADO"<<endl;
     }
 
     void base_datos::modifica_cantidad_componente(int posComp, int nueva_cantidad, int pos){
@@ -137,9 +137,8 @@
         cout<<"Cantidad modificada con exito"<<endl;
     }
 
-    void Interfaz(){
+    void Interfaz(base_datos *menu){
     /*AQUI INICIA LA BASE DE DATOS*/
-    base_datos* menu = new base_datos();
     inicio:
     // Apenas se inicia el programa se imprimen las opciones que tiene el usuario para hacer:
 
@@ -160,7 +159,7 @@
     string entrada2;
     string entrada3;
     int posicion;
-    cin>>entrada; // Se guarda lo que el usuario meta en consola en la variable de entrada
+    getline(cin,entrada); // Se guarda lo que el usuario meta en consola en la variable de entrada
     int opcion;
     try { // Se genera un try y uun catch para confirmar que la entrada es un entero
         opcion = stoi(entrada); // SI ES un int: se guarda en una var convirtiendo la entrada a int
@@ -173,7 +172,7 @@
     switch(opcion){
         case 1:
             cout<<"Ingrese el nombre del nuevo combo: ";
-            cin>>entrada;
+            getline(cin,entrada);
             if (menu->combo_en_pos(entrada) == -1){// El combo no existe y por lo tanto no se repetira
                 menu->agregar_combo(new Combo(entrada));
             } else {
@@ -183,13 +182,17 @@
 
         case 2:
             cout<<"Ingrese el nombre del combo que desea buscar: ";
-            cin>>entrada;
-            menu->Combos[menu->combo_en_pos(entrada)]->imprimir_componentes();
+            getline(cin,entrada);
+            if (menu->combo_en_pos(entrada) != -1){// El combo no existe y por lo tanto no se repetira
+                menu->Combos[menu->combo_en_pos(entrada)]->imprimir_componentes();
+            } else {
+                cout<<"\nEl combo no existe\n"<<endl;
+            }
             goto inicio;
 
         case 3:
             cout<<"Introduzca el nombre del combo que desea eliminar: ";
-            cin>>entrada;
+            getline(cin,entrada);
             menu->borrar_combo(entrada);
             goto inicio;
 
@@ -201,29 +204,29 @@
         case 5:
             cout<<"\nUsted a elegido la opcion para cambiar el nombre de algun combo\n"<<endl;
             cout<<"Inserte el nombre del combo a modificar: ";
-            cin>>entrada;
+            getline(cin,entrada);
             posicion = menu->combo_en_pos(entrada);
             if(posicion == -1){
                 cout<<"ERROR: NO SE PUEDE MODIFIDICAR EL NOMBRE DEL COMBO YA QUE EL COMBO NO EXISTE"<<endl;
                 goto inicio;
             }
-            cout<<"\nEscriba el nombre a modificar: ";
-            cin>>entrada1;
-            cout<<"\n";
+            cout<<"\nEscriba el nombre a modificar: "<<endl;
+            getline(cin,entrada1);
             menu->modificar_nombre(entrada1, entrada);
             goto inicio;
 
         case 6:
             cout<<"\nUsted a elegido la opcion para modificar la cantidad de un componente de un combo\n"<<endl;
             cout<<"Ingrese el nombre del combo al que desea modificar la cantidad componente: ";
-            cin>>entrada;
+            getline(cin,entrada);
             posicion = menu->combo_en_pos(entrada);
             if(posicion == -1){ // EL combo al que se quiere a�adir un componente no existe y por lo tanto no se puede agregar nada
-                cout<<"ERROR: NO SE PUEDE AGREGAR COMPONENTE YA QUE EL COMBO NO EXISTE"<<endl;   
-                goto inicio; 
+                cout<<"ERROR: NO SE PUEDE AGREGAR COMPONENTE YA QUE EL COMBO NO EXISTE"<<endl;
+                goto inicio;
             }
+            menu->Combos[posicion]->imprimir_componentes();
             cout<<"Ingrese el nombre del componente: ";
-            cin>>entrada1;
+            getline(cin,entrada1);
             if (menu->Combos[posicion]->componente_en_pos(entrada1) == -1)
                 cout<<"\nERROR: EL COMPONENTE NO ESTA EN EL COMBO"<<endl;
             else{
@@ -237,41 +240,30 @@
 
         case 7:
             cout<<"Ingrese el nombre del combo al que desea agregar el componente: ";
-            cin>>entrada;
+            getline(cin,entrada);
             posicion = menu->combo_en_pos(entrada);
             if(posicion == -1){ // EL combo al que se quiere a�adir un componente no existe y por lo tanto no se puede agregar nada
                 cout<<"ERROR: NO SE PUEDE AGREGAR COMPONENTE YA QUE EL COMBO NO EXISTE"<<endl;
                 goto inicio;
             }
             cout<<"Ingrese el nombre del nuevo componente: ";
-            cin>>entrada1;
+            getline(cin,entrada1);
             if (menu->Combos[posicion]->componente_en_pos(entrada1) != -1){
                 cout<<"\nERROR: EL COMPONENTE YA ESTA EN EL COMBO"<<endl;
                 goto inicio;
             }
 preguntar_cuantos:
             cout<<"Digite cuantos desea agregar al combo: ";
-            cin>>entrada2;
+            getline(cin,entrada2);
             try{
             stoi(entrada2);
             } catch(...){
                 cout<<"\nINGRESAR SOLO NUMEROS ENTEROS"<<endl;
                 goto preguntar_cuantos;
             }
-Eleccion_medida:
-            cout<<"Elija una unidad de medida: \n1.Vaso\n2.Lata\n3.Unidad\n";
-            cin>>entrada3;
-            try{
-                if(stoi(entrada3) == 1 || stoi(entrada3) == 2 || stoi(entrada3) == 3){
-                    menu->agregar_componente_combo(entrada, new Componente(entrada1,stoi(entrada2),stoi(entrada3)-1));
-                } else {
-                    cout<<"\nERROR: NO ES UNA OPCION VALIDA\n";
-                    goto Eleccion_medida;
-                }
-            } catch (...){
-                cout<<"\nERROR: NO ES UNA OPCION VALIDA\n";
-                goto Eleccion_medida;
-            }
+            cout<<"Ingrese la una unidad de medida: ";
+            getline(cin,entrada3);
+            menu->agregar_componente_combo(entrada, new Componente(entrada1,stoi(entrada2),entrada3));
             goto inicio;
         case 8:
             cout<<"\nUsted a elegido la opcion para calcular las porciones para n personas\n"<<endl;

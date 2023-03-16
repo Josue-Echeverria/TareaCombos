@@ -2,7 +2,6 @@
 #include <string>
 using namespace std;
 
-void Interfaz();
 
 // Estrcutura de comida que sera parte de un combo
 
@@ -10,13 +9,12 @@ struct Componente{
     string nombre;
     int cantidad;
     string unidad_medida;
-    string unidades_medida[3] = {"Vaso","Lata","Unidad"};
 
     Componente(){};
-    Componente(string nombre_entrada, int cantidad_entrada, int unidad_medida_entrada){
+    Componente(string nombre_entrada, int cantidad_entrada, string unidad_medida_entrada){
         nombre = nombre_entrada;
         cantidad = cantidad_entrada;
-        unidad_medida = unidades_medida[unidad_medida_entrada];
+        unidad_medida = unidad_medida_entrada;
     }
 
     //Procedimientos:
@@ -65,3 +63,5 @@ struct base_datos{
     void calcular_porciones(string nombre, int n_personas); // Calcula cuantos componentes tiene que tener un combo para servir a n personas (Regla de 3)
 
 };
+void Interfaz(base_datos* menu);
+
