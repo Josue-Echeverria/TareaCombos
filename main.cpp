@@ -22,10 +22,12 @@ int main()
     combo_prueba0->agregrar_componente(componente_prueba8);
     combo_prueba0->agregrar_componente(componente_prueba4);
     combo_prueba0->agregrar_componente(componente_prueba1);
+    combo_prueba0 ->porciones = 4;
 
     Combo *combo_prueba1 = new Combo("Combo Personal");
     combo_prueba1->agregrar_componente(componente_prueba0);
     combo_prueba1->agregrar_componente(componente_prueba1);
+    combo_prueba1 ->porciones = 1;
 
     Combo *combo_prueba3 = new Combo("Combo Estudiantec");
 
@@ -41,7 +43,7 @@ int main()
     combo_prueba6->agregrar_componente(componente_prueba7);
     combo_prueba6->agregrar_componente(componente_prueba5);
     combo_prueba6->agregrar_componente(componente_prueba2);
-
+    combo_prueba6 ->porciones = 2;
     base_datos *base_pruebas = new base_datos();
 
     base_pruebas->agregar_combo(combo_prueba0);

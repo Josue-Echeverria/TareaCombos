@@ -93,7 +93,11 @@
                 Componentes[i]->imprimir_componente();
         }
     }
+    
+    void Combo::imprimir_porciones(){
+        cout<<"La cantidad de porciones es de: "<<endl;
 
+    }
 
     void base_datos::imprimir_combos(){
         if (contador_combos == 0)
@@ -102,6 +106,7 @@
             for(int i = 0; i<contador_combos; i++){
                 cout<<"\n"<<Combos[i]->nombre<<":"<<endl;
                 Combos[i]->imprimir_componentes();
+                cout<<"Cantidad de porciones: "<<Combos[i]->porciones<<endl;
             }
         }
     }
@@ -137,11 +142,22 @@
         cout<<"Cantidad modificada con exito"<<endl;
     }
 
+    void base_datos::calcular_porciones(int combo, int n_personas){
+        double calculo;
+        int contador_componentes = Combos[combo]->contador_componentes;
+        int porcion = Combos[combo]->porciones;
+        for(int i = 0; i<contador_componentes; i++){
+            calculo = Combos[combo]->Componentes[i]->cantidad;
+            calculo = (n_personas * calculo) / porcion; 
+            Combos[combo]->Componentes[i]->imprimir_componente();
+            cout<<"La nueva cantidad estimada es de: "<<calculo<<" "<<Combos[combo]->Componentes[i]->unidad_medida<<endl;
+        }   
+    }
+
     void Interfaz(base_datos *menu){
     /*AQUI INICIA LA BASE DE DATOS*/
     inicio:
     // Apenas se inicia el programa se imprimen las opciones que tiene el usuario para hacer:
-
     cout<<"^-^-^-^-^-^-^-^Menu^-^-^-^-^-^-^-^"<<endl;
     cout<< "1. Agregar combo" <<endl;
     cout<< "2. Buscar combo" <<endl;
@@ -175,6 +191,35 @@
             getline(cin,entrada);
             if (menu->combo_en_pos(entrada) == -1){// El combo no existe y por lo tanto no se repetira
                 menu->agregar_combo(new Combo(entrada));
+                posicion = menu->combo_en_pos(entrada);
+preguntar_componente:
+                cout<<"Ingrese el nombre del nuevo componente: ";
+                getline(cin,entrada1);
+                if (menu->Combos[posicion]->componente_en_pos(entrada1) != -1){
+                    cout<<"\nERROR: EL COMPONENTE YA ESTA EN EL COMBO"<<endl;
+                    goto preguntar_componente;
+                }
+preguntar_cant:
+                cout<<"Digite cuantos desea agregar al combo: ";
+                getline(cin,entrada2);
+                try{
+                stoi(entrada2);
+                } catch(...){
+                    cout<<"\nINGRESAR SOLO NUMEROS ENTEROS"<<endl;
+                    goto preguntar_cant;
+                }
+                cout<<"Ingrese la una unidad de medida: ";
+                getline(cin,entrada3);
+                menu->agregar_componente_combo(entrada, new Componente(entrada1,stoi(entrada2),entrada3));
+                cout<<"Desea agregar otro componente y/n.... "<<endl;
+                getline(cin,entrada3);
+                if(entrada3 == "n"){
+                    cout<<"Ingrese la cantidad de porciones: "<<endl;
+                    getline(cin, entrada2);
+                    menu->Combos[posicion]->porciones = stoi(entrada2);
+                    goto inicio;
+                }
+                goto preguntar_componente;
             } else {
                 cout<<"\nEL COMBO YA ESTA EN EL LA BASE DE DATOS\n"<<endl;
             }
@@ -185,6 +230,8 @@
             getline(cin,entrada);
             if (menu->combo_en_pos(entrada) != -1){// El combo no existe y por lo tanto no se repetira
                 menu->Combos[menu->combo_en_pos(entrada)]->imprimir_componentes();
+                cout<<"Cantidad de porciones: "<<menu->Combos[menu->combo_en_pos(entrada)]->porciones<<endl;
+
             } else {
                 cout<<"\nEl combo no existe\n"<<endl;
             }
@@ -267,8 +314,29 @@ preguntar_cuantos:
             goto inicio;
         case 8:
             cout<<"\nUsted a elegido la opcion para calcular las porciones para n personas\n"<<endl;
-
-            cout<<"TO DO"<<endl;
+            cout<<"Ingrese el nombre del combo al que desea calcular la cantidad de porciones: ";
+            getline(cin,entrada);
+            posicion = menu->combo_en_pos(entrada);
+            if(posicion == -1){ // EL combo al que se quiere a�adir un componente no existe y por lo tanto no se puede agregar nada
+                cout<<"ERROR: NO SE PUEDE CALCULAR COMPONENTES YA QUE EL COMBO NO EXISTE"<<endl;
+                goto inicio;
+            }
+            if(menu->Combos[posicion]->contador_componentes == 0){
+                cout<<"ERROR: NO SE PUEDE CALCULAR COMPONENTES YA QUE EL COMBO NO POSEE COMPONENTES"<<endl;
+                goto inicio;
+            }
+            //menu->Combos[posicion]->imprimir_componentes();
+            menu->Combos[posicion]->imprimir_componentes();
+preguntar_estimado:
+            cout<<"Digite para cuantas personas desea calcular el combo: ";
+            getline(cin,entrada2);
+            try{
+            stoi(entrada2);
+            } catch(...){
+                cout<<"\nINGRESAR SOLO NUMEROS ENTEROS"<<endl;
+                goto preguntar_estimado;
+            }
+            menu->calcular_porciones(posicion, stoi(entrada2));
             goto inicio;
         case 9:
             cout<<"Gracias por su tiempo :)";

@@ -14,7 +14,7 @@ struct Componente{
     Componente(string nombre_entrada, int cantidad_entrada, string unidad_medida_entrada){
         nombre = nombre_entrada;
         cantidad = cantidad_entrada;
-        unidad_medida = unidad_medida_entrada;
+        unidad_medida = unidad_medida_entrada;    
     }
 
     //Procedimientos:
@@ -28,6 +28,7 @@ struct Combo{
     string nombre;
     Componente *Componentes[30];
     int contador_componentes = 0;
+    int porciones;
 
     Combo(string nombre_entrada){
         nombre = nombre_entrada;
@@ -39,6 +40,7 @@ struct Combo{
     void agregrar_componente(Componente *componente_entrada); // Agrega un componente al combo
     void modificar_cant_componente(string nombre, int nueva_cant); // Busca el componente con el nombre correspondiente y cambia la cantidad
     void imprimir_componentes(); // Imprime todos los componentes del combo
+    void imprimir_porciones();
 };
 
 // Estructura que almacenara todos los combos del restaurante
@@ -60,7 +62,7 @@ struct base_datos{
     void modificar_nombre(string nuevo_nombre, string nombre_actual); // Busca el nombre actual del combo en la base de datos y lo cambia por un nombre nuevo
     void modifica_cantidad_componente(int posComp, int nueva_cantidad, int pos); // Buca el combo con el nombre correspondiente y modifica la cantidad de componente de un combo
     void agregar_componente_combo(string nombre, Componente *componente_agregar); // Busca el combo que se va a modificar y agrega el componente de entrada
-    void calcular_porciones(string nombre, int n_personas); // Calcula cuantos componentes tiene que tener un combo para servir a n personas (Regla de 3)
+    void calcular_porciones(int combo, int n_personas); // Calcula cuantos componentes tiene que tener un combo para servir a n personas (Regla de 3)
 
 };
 void Interfaz(base_datos* menu);
